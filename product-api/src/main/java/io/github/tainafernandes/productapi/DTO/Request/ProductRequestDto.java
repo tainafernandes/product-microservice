@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTORequest {
+public class ProductRequestDto {
 
     private UUID id;
     
