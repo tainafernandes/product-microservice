@@ -9,8 +9,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ProductService {
-    Product save(ProductRequestDto productDto);
+    ProductResponseDto create(ProductRequestDto productDto);
     Optional<Product> getById(UUID id);
-
     List<Product> findAll();
+    ProductResponseDto update(UUID id, ProductRequestDto dto);
+    void deleteById(UUID id);
 }

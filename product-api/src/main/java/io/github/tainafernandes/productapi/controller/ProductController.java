@@ -9,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +24,8 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public ProductResponseDto create(@RequestBody ProductRequestDto dto){
-        return mapper.map(service.save(dto), ProductResponseDto.class);
+    public ProductResponseDto create(@RequestBody @Valid ProductRequestDto dto){
+        return mapper.map(service.create(dto), ProductResponseDto.class);
     }
     @GetMapping("{id}")
     @ResponseStatus(OK)
@@ -37,5 +38,17 @@ public class ProductController {
     @ResponseStatus(OK)
     public List<Product> findAll(){
         return service.findAll();
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(OK)
+    public ProductResponseDto update (@PathVariable UUID id, @RequestBody @Valid ProductRequestDto dto){
+        return service.update(id, dto);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(NO_CONTENT)
+    public void delete(@PathVariable UUID id){
+        service.deleteById(id);
     }
 }

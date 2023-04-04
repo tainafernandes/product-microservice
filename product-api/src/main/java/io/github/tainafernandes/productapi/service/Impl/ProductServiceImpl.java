@@ -23,19 +23,41 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public Product save(ProductRequestDto productDto) {
+    public ProductResponseDto create(ProductRequestDto productDto) {
         //fazer validações - TRATAMENTO DE ERRO
         //Produto já existe? Se sim retorna erro ao tentar salvar
-        return repository.save(mapper.map (productDto, Product.class));
+        Product product = repository.save(mapper.map(productDto, Product.class));
+        return mapper.map(product, ProductResponseDto.class);
     }
     @Override
     public Optional<Product> getById(UUID id) {
         return repository.findById(id);
     }
-
     @Override
     public List<Product> findAll() {
         return repository.findAll();
     }
+
+    @Override
+    @Transactional
+    public ProductResponseDto update(UUID id, ProductRequestDto dto) {
+        Product product = new Product();
+
+        product.setName(dto.getName());
+        product.setPrice(dto.getPrice());
+        product.setCategory(dto.getCategory());
+
+        mapper.map(getById(id), Product.class);
+
+        repository.save(product);
+
+        return mapper.map(product, ProductResponseDto.class);
+    }
+    @Override
+    public void deleteById(UUID id) {
+        Product product = mapper.map(getById(id), Product.class);
+        repository.deleteById(product.getId());
+    }
+
 
 }
